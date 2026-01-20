@@ -237,7 +237,7 @@ dependencies = [
 [[package]]
 name = "bitcoin"
 version = "0.31.2"
-source = "git+https://github.com/QEDProtocol/rust-dogecoin?rev=28b12db7d5dd245f09eae19e59afcf8ba877ae2d#28b12db7d5dd245f09eae19e59afcf8ba877ae2d"
+source = "git+https://github.com/QEDProtocol/rust-dogecoin?rev=8eedd4dd8113f4f2af1e8fbdc5bf53ffeb3e19cf#8eedd4dd8113f4f2af1e8fbdc5bf53ffeb3e19cf"
 dependencies = [
  "bech32 0.10.0-beta",
  "bitcoin-internals",
@@ -655,7 +655,7 @@ dependencies = [
  "arrayref",
  "base64 0.22.0",
  "bincode",
- "bitcoin 0.31.2 (git+https://github.com/QEDProtocol/rust-dogecoin?rev=28b12db7d5dd245f09eae19e59afcf8ba877ae2d)",
+ "bitcoin 0.31.2 (git+https://github.com/QEDProtocol/rust-dogecoin?rev=8eedd4dd8113f4f2af1e8fbdc5bf53ffeb3e19cf)",
  "bitcoind 0.35.1",
  "clap",
  "crossbeam-channel",

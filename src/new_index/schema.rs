@@ -62,9 +62,12 @@ impl Store {
         debug!("{} blocks were indexed", indexed_blockhashes.len());
 
         let cache_db = DB::open(&path.join("cache"), config);
+        debug!("opened cache_db");
 
         let headers = if let Some(tip_hash) = txstore_db.get(b"t") {
+            debug!("loading blockheaders from db...");
             let tip_hash = deserialize(&tip_hash).expect("invalid chain tip in `t`");
+            debug!("tip at {:?}", tip_hash);
             let headers_map = load_blockheaders(&txstore_db);
             debug!(
                 "{} headers were loaded, tip at {:?}",
