@@ -284,6 +284,7 @@ impl Indexer {
         );
         start_fetcher(self.from, &daemon, to_index)?.map(|blocks| self.index(&blocks));
         self.start_auto_compactions(&self.store.history_db);
+        self.start_auto_compactions(&self.store.cache_db);
 
         if let DBFlush::Disable = self.flush {
             debug!("flushing to disk");
@@ -961,9 +962,16 @@ fn load_blockhashes(db: &DB, prefix: &[u8]) -> HashSet<BlockHash> {
 fn load_blockheaders(db: &DB) -> HashMap<BlockHash, BlockHeader> {
     db.iter_scan(&BlockRow::header_filter())
         .map(BlockRow::from_row)
-        .map(|r| {
+        .enumerate()
+        .map(|(block_height, r)| {
             let key: BlockHash = deserialize(&r.key.hash).expect("failed to parse BlockHash");
-            let value: BlockHeader = deserialize(&r.value).expect("failed to parse BlockHeader");
+            let mut value: BlockHeader = deserialize(&r.value).expect("failed to parse BlockHeader");
+            // HACK: to prevent out of memory issues, we remove the AuxPow data from the header for blocks before 14680000
+            // TODO: improve this to have the api return the full header by querying the database rather than using the hash map
+            if block_height < 14680000 {
+                value.aux_data = None;
+            }
+
             (key, value)
         })
         .collect()

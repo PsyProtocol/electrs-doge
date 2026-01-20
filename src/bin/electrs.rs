@@ -4,6 +4,7 @@ extern crate log;
 
 extern crate electrs;
 
+use bincode::de;
 use error_chain::ChainedError;
 use std::process;
 use std::sync::{Arc, RwLock};
@@ -61,14 +62,17 @@ fn run_server(config: Arc<Config>) -> Result<()> {
         &config,
         &metrics,
     );
+    debug!("opened indexer");
     let mut tip = indexer.update(&daemon)?;
 
+    debug!("updated tip to {:?}", tip);
     let chain = Arc::new(ChainQuery::new(
         Arc::clone(&store),
         Arc::clone(&daemon),
         &config,
         &metrics,
     ));
+    debug!("initialized ChainQuery");
 
     if let Some(ref precache_file) = config.precache_scripts {
         let precache_scripthashes = precache::scripthashes_from_file(precache_file.to_string())
@@ -76,11 +80,13 @@ fn run_server(config: Arc<Config>) -> Result<()> {
         precache::precache(&chain, precache_scripthashes);
     }
 
+    debug!("initialized precache");
     let mempool = Arc::new(RwLock::new(Mempool::new(
         Arc::clone(&chain),
         &metrics,
         Arc::clone(&config),
     )));
+    debug!("initialized Mempool");
     loop {
         match Mempool::update(&mempool, &daemon) {
             Ok(_) => break,
@@ -110,7 +116,7 @@ fn run_server(config: Arc<Config>) -> Result<()> {
     // TODO: configuration for which servers to start
     let rest_server = rest::start(Arc::clone(&config), Arc::clone(&query));
     let electrum_server = ElectrumRPC::start(Arc::clone(&config), Arc::clone(&query), &metrics);
-
+    debug!("started servers");
     let main_loop_count = metrics.gauge(MetricOpts::new(
         "electrs_main_loop_count",
         "count of iterations of electrs main loop each 5 seconds or after interrupts",
