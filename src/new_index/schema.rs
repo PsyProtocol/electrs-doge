@@ -965,11 +965,16 @@ fn load_blockheaders(db: &DB) -> HashMap<BlockHash, BlockHeader> {
         .enumerate()
         .map(|(block_height, r)| {
             let key: BlockHash = deserialize(&r.key.hash).expect("failed to parse BlockHash");
-            let mut value: BlockHeader = deserialize(&r.value).expect("failed to parse BlockHeader");
+            let value: BlockHeader = deserialize(&r.value).expect("failed to parse BlockHeader");
+            /* 
             // HACK: to prevent out of memory issues, we remove the AuxPow data from the header for blocks before 14680000
             // TODO: improve this to have the api return the full header by querying the database rather than using the hash map
-            if block_height < 14680000 {
+            if block_height < 14_680_000 {
                 value.aux_data = None;
+            }
+            */
+            if block_height % 1_000_000 == 0 {
+                info!("loaded block header at height {} into memory", block_height);
             }
 
             (key, value)
