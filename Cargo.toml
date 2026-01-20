@@ -46,7 +46,7 @@ signal-hook = "0.3"
 stderrlog = "0.6"
 hex-literal = "0.4.1"
 sysconf = ">=0.3.4"
-time = { version = "0.3", features = ["formatting"] }
+time = { version = "0.3.36", features = ["formatting"] }
 tiny_http = "0.12.0"
 url = "2.2.0"
 hyper = "0.14"
