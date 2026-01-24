@@ -29,6 +29,8 @@ pub enum Network {
     #[cfg(not(feature = "liquid"))]
     Testnet,
     #[cfg(not(feature = "liquid"))]
+    Testnet4,
+    #[cfg(not(feature = "liquid"))]
     Regtest,
     #[cfg(not(feature = "liquid"))]
     Signet,
@@ -97,6 +99,7 @@ impl Network {
         return vec![
             "mainnet".to_string(),
             "testnet".to_string(),
+            "testnet4".to_string(),
             "regtest".to_string(),
             "signet".to_string(),
         ];
@@ -124,6 +127,9 @@ pub fn bitcoin_genesis_hash(network: BNetwork) -> bitcoin::BlockHash {
         )),
         BNetwork::Testnet => BlockHash::from_byte_array(hex_literal::hex!(
             "9e555073d0c4f36456db8951f449704d544d2826d9aa60636b40374626780abb"
+        )),
+        BNetwork::Testnet4 => BlockHash::from_byte_array(hex_literal::hex!(
+            "77b0e0144ecea23a77f4ea18882ef40e9c730f8b93ecf96c84541f17ef03c2c3"
         )),
         BNetwork::Regtest => BlockHash::from_byte_array(hex_literal::hex!(
             "a573e91c1772076c0d40f70e4408c83a31705f296ae6e7629d4adcb5a360213d"
@@ -163,6 +169,8 @@ impl From<&str> for Network {
             #[cfg(not(feature = "liquid"))]
             "testnet" => Network::Testnet,
             #[cfg(not(feature = "liquid"))]
+            "testnet4" => Network::Testnet4,
+            #[cfg(not(feature = "liquid"))]
             "regtest" => Network::Regtest,
             #[cfg(not(feature = "liquid"))]
             "signet" => Network::Signet,
@@ -185,6 +193,7 @@ impl From<Network> for BNetwork {
         match network {
             Network::Bitcoin => BNetwork::Bitcoin,
             Network::Testnet => BNetwork::Testnet,
+            Network::Testnet4 => BNetwork::Testnet4,
             Network::Regtest => BNetwork::Regtest,
             Network::Signet => BNetwork::Signet,
         }
@@ -199,6 +208,7 @@ impl From<BNetwork> for Network {
             BNetwork::Testnet => Network::Testnet,
             BNetwork::Regtest => Network::Regtest,
             BNetwork::Signet => Network::Signet,
+            BNetwork::Testnet4 => Network::Testnet4,
             _ => panic!("unknown network {:?}", network),
         }
     }

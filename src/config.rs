@@ -262,6 +262,8 @@ impl Config {
             Network::Regtest => 18443,
             #[cfg(not(feature = "liquid"))]
             Network::Signet => 38332,
+            #[cfg(not(feature = "liquid"))]
+            Network::Testnet4 => 44557,
 
             #[cfg(feature = "liquid")]
             Network::Liquid => 7041,
@@ -277,6 +279,8 @@ impl Config {
             Network::Regtest => 60401,
             #[cfg(not(feature = "liquid"))]
             Network::Signet => 60601,
+            #[cfg(not(feature = "liquid"))]
+            Network::Testnet4 => 60002,
 
             #[cfg(feature = "liquid")]
             Network::Liquid => 51000,
@@ -294,6 +298,8 @@ impl Config {
             Network::Regtest => 3002,
             #[cfg(not(feature = "liquid"))]
             Network::Signet => 3003,
+            #[cfg(not(feature = "liquid"))]
+            Network::Testnet4 => 3004,
 
             #[cfg(feature = "liquid")]
             Network::Liquid => 3000,
@@ -311,6 +317,8 @@ impl Config {
             Network::Regtest => 24224,
             #[cfg(not(feature = "liquid"))]
             Network::Signet => 54224,
+            #[cfg(not(feature = "liquid"))]
+            Network::Testnet4 => 14225,
 
             #[cfg(feature = "liquid")]
             Network::Liquid => 34224,
@@ -462,6 +470,8 @@ pub fn get_network_subdir(network: Network) -> Option<&'static str> {
         Network::Bitcoin => None,
         #[cfg(not(feature = "liquid"))]
         Network::Testnet => Some("testnet3"),
+        #[cfg(not(feature = "liquid"))]
+        Network::Testnet4 => Some("testnet4"),
         #[cfg(not(feature = "liquid"))]
         Network::Regtest => Some("regtest"),
         #[cfg(not(feature = "liquid"))]
