@@ -1211,10 +1211,12 @@ fn address_to_scripthash(addr: &str, network: Network) -> Result<FullHash, HttpE
     #[cfg(not(feature = "liquid"))]
     let is_expected_net = addr.is_valid_for_network(network.into());
 
+
     #[cfg(feature = "liquid")]
     let is_expected_net = addr.params == network.address_params();
 
     if !is_expected_net {
+        println!("expected network: {:?}, address: {:?}", network, addr);
         bail!(HttpError::from("Address on invalid network".to_string()))
     }
 
